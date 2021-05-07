@@ -2,6 +2,7 @@ package com.android.androidproject2;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -142,11 +143,14 @@ public class MonthCalendarFragment extends Fragment {
             mParam2 = Calendar.getInstance().get(Calendar.MONTH); //month 는 0부터 시작
         }
 
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParam1+"년"+mParam2+"월");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
 
         View rootview = inflater.inflate(R.layout.fragment_month_calendar, container, false);
 

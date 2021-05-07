@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.main_container, new MonthViewFragment());
         fragmentTransaction.commit();
 
-
     }
 
     @Override

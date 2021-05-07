@@ -56,6 +56,7 @@ public class WeekViewFragment extends Fragment {
             mParam1 = Calendar.getInstance().get(Calendar.YEAR);
             mParam2 = Calendar.getInstance().get(Calendar.MONTH); //month 는 0부터 시작
         }
+
     }
 
     @Override
