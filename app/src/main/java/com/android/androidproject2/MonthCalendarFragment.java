@@ -143,7 +143,7 @@ public class MonthCalendarFragment extends Fragment {
             mParam2 = Calendar.getInstance().get(Calendar.MONTH); //month 는 0부터 시작
         }
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParam1+"년"+mParam2+"월");
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParam1+"년"+mParam2+"월");
     }
 
     @Override
@@ -151,6 +151,7 @@ public class MonthCalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParam1+"년"+(mParam2+1)+"월");
 
         View rootview = inflater.inflate(R.layout.fragment_month_calendar, container, false);
 

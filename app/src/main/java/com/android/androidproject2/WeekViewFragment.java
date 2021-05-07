@@ -71,7 +71,7 @@ public class WeekViewFragment extends Fragment {
         //Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_month_view, container, false);
 
-        //vpPager.setCurrentItem(50);
+        vpPager.setCurrentItem(50);
         return rootview;
 
         // Inflate the layout for this fragment

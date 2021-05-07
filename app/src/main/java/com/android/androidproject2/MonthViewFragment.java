@@ -83,7 +83,9 @@ public class MonthViewFragment extends Fragment {
         FragmentStateAdapter adapter = new MonthCalendarAdapter(this);
         vpPager.setAdapter(adapter);
 
-        //vpPager.setCurrentItem(50);
+        vpPager.setCurrentItem(50);
+
+
         //Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_month_view, container, false);
         return rootview;
