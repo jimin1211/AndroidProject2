@@ -25,6 +25,7 @@ public class MonthViewFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static int num = 0;
 
     // TODO: Rename and change types of parameters
     private int mParam1;
@@ -55,7 +56,7 @@ public class MonthViewFragment extends Fragment {
             mParam1 = getArguments().getInt(ARG_PARAM1);
             mParam2 = getArguments().getInt(ARG_PARAM2);
         }
-        else{
+        else {
             mParam1 = Calendar.getInstance().get(Calendar.YEAR);
             mParam2 = Calendar.getInstance().get(Calendar.MONTH); //month 는 0부터 시작
         }
@@ -73,7 +74,12 @@ public class MonthViewFragment extends Fragment {
         FragmentStateAdapter adapter = new MonthCalendarAdapter(this);
         vpPager.setAdapter(adapter);
 
-        vpPager.setCurrentItem(50);
+        vpPager.setCurrentItem(50,false);
+
+        /*if(num == 0){ //처음 생성되었을 때 한번만 초기화해주기 위해서
+            vpPager.setCurrentItem(50);
+            num++;
+        }*/
 
 
         return rootview;

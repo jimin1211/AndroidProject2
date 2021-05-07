@@ -69,6 +69,8 @@ public class WeekViewFragment extends Fragment {
         FragmentStateAdapter adapter = new MonthCalendarAdapter(this);
         vpPager.setAdapter(adapter);
 
+        vpPager.setCurrentItem(50,false);
+
         return rootview;
     }
 }
