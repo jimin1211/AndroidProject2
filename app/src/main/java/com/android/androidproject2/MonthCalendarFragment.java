@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -151,7 +154,6 @@ public class MonthCalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParam1+"년"+(mParam2+1)+"월");
 
         View rootview = inflater.inflate(R.layout.fragment_month_calendar, container, false);
 
@@ -165,6 +167,10 @@ public class MonthCalendarFragment extends Fragment {
                 android.R.layout.simple_list_item_1,
                 date);
         gridView.setAdapter(GridViewAdapter);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParam1+"년"+(mParam2+1)+"월");
+        TextView textView = (TextView)rootview.findViewById(R.id.textview);
+        textView.setText(mParam1+"년"+(mParam2+1)+"월");
 
         return rootview;
     }

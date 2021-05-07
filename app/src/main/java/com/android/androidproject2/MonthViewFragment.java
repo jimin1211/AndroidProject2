@@ -66,16 +66,6 @@ public class MonthViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        /*if (getArguments() != null) {
-            mParam1 = getArguments().getInt(ARG_PARAM1);
-            mParam2 = getArguments().getInt(ARG_PARAM2);
-        }
-        else{
-            mParam1 = Calendar.getInstance().get(Calendar.YEAR);
-            mParam2 = Calendar.getInstance().get(Calendar.MONTH); //month 는 0부터 시작
-        }*/
-
-
         View rootview = inflater.inflate(R.layout.fragment_month_view, container, false);
 
 
@@ -86,8 +76,6 @@ public class MonthViewFragment extends Fragment {
         vpPager.setCurrentItem(50);
 
 
-        //Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_month_view, container, false);
         return rootview;
     }
 }
