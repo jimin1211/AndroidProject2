@@ -64,12 +64,6 @@ public class MonthCalendarAdapter extends FragmentStateAdapter{
 
         preposition = position;
 
-        //year = Calendar.getInstance().get(Calendar.YEAR);
-        //month = Calendar.getInstance().get(Calendar.MONTH); //month 는 0부터 시작
-
-        //year = position;    //이건 알아서 수정
-        //month = position+1; //이건 알아서 수정
-
         return MonthCalendarFragment.newInstance(year, month);
     }
 
