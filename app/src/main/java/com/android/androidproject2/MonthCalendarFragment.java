@@ -73,78 +73,41 @@ public class MonthCalendarFragment extends Fragment {
         return fragment;
     }
 
-    public static String[] getDay(int year, int month, int day){
-        //그냥 이렇게만 하면 오늘 날짜가 포함된 주만 나옴
-        //swipe시, 달이 계속 바뀜
-        //Adapter 부분을 수정해야할듯?
-
-        //day = Calendar.getInstance().get(Calendar.DATE);
-        //이거의 문제점은 무조건 현재 시간을 기준으로만 나옴......
-
-        //day = sDay.get(Calendar.DATE);
-        //원래 이건데...... 이렇게 하면 무조건 1일로 됨...
-
+    public static String[] getDay(int year, int month, int day) {
         Calendar today = Calendar.getInstance();
         today.set(year, month, day);
         int x = 0;
         int max = today.getActualMaximum(Calendar.DATE);
         String[] date = new String[7];
 
-        /*for(int i=0; i<7; i++){
-            date[i] = day+"";
-        }*/
+        int week = today.get(Calendar.WEEK_OF_MONTH);
+        for (int i = 1; i <= today.getActualMaximum(Calendar.DATE); i++) {
+            today.set(year, month, i);
+            if ((today.get(Calendar.WEEK_OF_MONTH) == week)) {
+                //해당 주를 get해서 week랑 똑같으면
+                //그 주 일요일부터 그냥 for문으로 집어넣기!!!
 
-        for(int i=day; i<=max; i++){
-            if(x >= 7)
-                break;
-            date[x++] = i+"";
+                if (x < today.get(Calendar.DAY_OF_WEEK) - 1) {
+                    for (; x < today.get(Calendar.DAY_OF_WEEK) - 1; ) {
+                        date[x++] = "";
+                    }
+                    date[x++] = i + "";
+                    //date[x++] = today.get(Calendar.DAY_OF_WEEK)+"";
+                } else {
+                    date[x++] = i + "";
+                    //date[x++] = today.get(Calendar.DAY_OF_WEEK)+"";
+                }
+            }
+
         }
-        if(x < 7){
+        if (x < 7) {
             for (; x < 7; x++) {
                 date[x] = "";
             }
         }
 
-
-        /*if(day<=0){
-            for(int i=0; i<7; i++){
-                date[i] = 11+"";
-            }
-        }
-
-        else if(day>today.getActualMaximum(Calendar.DATE)){
-            for(int i=0; i<7; i++){
-                date[i] = 12+"";
-            }
-        }
-
-        else{
-            for(int i=0; i<7; i++){
-                date[i] = 13+"";
-            }
-        }*/
-
-
-
-        /*for(int i=0; i<7; i++){
-            date[i] = 12+"";
-        }*/
-
-
-        /*int i=0;
-        int x = today.get(Calendar.DATE);
-        String[] date = new String[7];
-
-        for(; x<=today.getActualMaximum(Calendar.DATE) ; x++) {
-            date[i++] = x + "";
-        }
-        if(i < 7){
-            for (; i < 7; i++) {
-                date[i] = "";
-            }
-        }*/
-
         return date;
+
 
         /*Calendar today = Calendar.getInstance();
         today.set(year, month, day);
