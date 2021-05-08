@@ -226,7 +226,7 @@ public class MonthCalendarFragment extends Fragment {
             /*TextView textView = (TextView)rootview.findViewById(R.id.textview);
             textView.setText(mParam3+"");*/
             String[] day = getDay(mParam1, mParam2, mParam3);
-            GridView wGridview = (GridView) rootview.findViewById(R.id.gridview);
+            GridView wGridview = (GridView) rootview.findViewById(R.id.gridview1);
             ArrayAdapter<String> wGridViewAdapter = new ArrayAdapter<String>(
                     getActivity(),
                     android.R.layout.simple_list_item_1,
