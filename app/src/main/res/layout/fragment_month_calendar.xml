@@ -19,22 +19,15 @@
         android:layout_height="wrap_content">
 
         <GridView
-            android:listSelector="#00FFFF"
             android:id="@+id/gridview"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:numColumns="7"
-            android:verticalSpacing="25dp" />
+            android:verticalSpacing="25dp"
+            />
 
     </FrameLayout>
 
-    <GridView
-        android:id="@+id/gridview1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:numColumns="7"
-        android:verticalSpacing="25dp" />
 
 </LinearLayout>
