@@ -73,10 +73,7 @@ public class WeekViewFragment extends Fragment {
             else
                 week[i] = "";
         }
-
-
         GridView gridView = (GridView) rootview.findViewById(R.id.week_view);
-
         ArrayAdapter<String> GridViewAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 android.R.layout.simple_list_item_1,
