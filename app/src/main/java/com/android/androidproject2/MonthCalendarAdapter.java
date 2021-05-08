@@ -37,7 +37,7 @@ public class MonthCalendarAdapter extends FragmentStateAdapter{
         }
 
 
-        /*else */if(preposition > position){ //이전으로 넘겼을 때
+        if(preposition > position){ //이전으로 넘겼을 때
             if(month == 0){ //현재 month값이 0(1월)일 때
                 //year = year-1; //이전년으로
                 year--;

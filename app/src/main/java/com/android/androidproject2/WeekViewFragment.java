@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ListView;
 
 import java.util.Calendar;
 
@@ -88,6 +89,7 @@ public class WeekViewFragment extends Fragment {
         vpPager.setAdapter(adapter);
 
         vpPager.setCurrentItem(50,false);
+
 
         return rootview;
     }
