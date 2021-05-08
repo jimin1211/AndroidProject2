@@ -14,6 +14,7 @@ public class MonthCalendarAdapter extends FragmentStateAdapter{
     private static int preposition = 50;
     private static int year, month;
     private static int num = 0;
+    private String tabTitles[] = new String[] {"일", "월", "화", "수", "목", "금", "토"};
     public MonthCalendarAdapter(@NonNull Fragment fragment) {
         super(fragment);
     }
@@ -70,5 +71,9 @@ public class MonthCalendarAdapter extends FragmentStateAdapter{
     @Override
     public int getItemCount() {
         return NUM_ITEMS;
+    }
+
+    public CharSequence getPageTitle(int position) {
+        return tabTitles[position];
     }
 }

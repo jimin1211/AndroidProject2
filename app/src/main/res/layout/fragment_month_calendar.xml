@@ -8,6 +8,7 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,13 +17,6 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <GridView
-            android:id="@+id/weekgridview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:numColumns="7"
-            android:verticalSpacing="25dp" />
 
         <GridView
             android:id="@+id/gridview"
@@ -34,7 +28,6 @@
             />
 
     </FrameLayout>
-
 
 
 </LinearLayout>

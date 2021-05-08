@@ -158,6 +158,7 @@ public class MonthCalendarFragment extends Fragment {
         View rootview = inflater.inflate(R.layout.fragment_month_calendar, container, false);
 
 
+
         String[] date = getItem(mParam1,mParam2);
 
         GridView gridView = (GridView) rootview.findViewById(R.id.gridview);

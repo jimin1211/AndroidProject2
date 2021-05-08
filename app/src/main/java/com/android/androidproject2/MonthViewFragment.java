@@ -3,6 +3,7 @@ package com.android.androidproject2;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -11,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Calendar;
 
@@ -75,6 +79,10 @@ public class MonthViewFragment extends Fragment {
         vpPager.setAdapter(adapter);
 
         vpPager.setCurrentItem(50,false);
+
+
+
+        //vpPager.setCurrentItem(50,false);
 
         /*if(num == 0){ //처음 생성되었을 때 한번만 초기화해주기 위해서
             vpPager.setCurrentItem(50);
