@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -31,6 +34,7 @@ public class MonthCalendarFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM3 = "param3";
 
     static Calendar sDay = Calendar.getInstance(); //시작일;
     static int START_DAY_OF_WEEK; //시작일의 요일(1일의 요일)을 알아냄
@@ -40,6 +44,8 @@ public class MonthCalendarFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private int mParam1;
     private int mParam2;
+    private int mParam3;
+
 
     public MonthCalendarFragment() {
         // Required empty public constructor
@@ -52,28 +58,101 @@ public class MonthCalendarFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, year);
         args.putInt(ARG_PARAM2, month);
+        args.putInt(ARG_PARAM3, -1);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static String[] getDay(int year, int month){
-        /**그냥 이렇게만 하면 오늘 날짜가 포함된 주만 나옴**/
-        /**swipe시, 달이 계속 바뀜**/
-        /**Adapter 부분을 수정해야할듯?**/
+    public static MonthCalendarFragment newInstance(int year, int month, int day) {
+        MonthCalendarFragment fragment = new MonthCalendarFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_PARAM1, year);
+        args.putInt(ARG_PARAM2, month);
+        args.putInt(ARG_PARAM3, day);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
-        day = Calendar.getInstance().get(Calendar.DATE);
-        /**이거의 문제점은 무조건 현재 시간을 기준으로만 나옴......**/
+    public static String[] getDay(int year, int month, int day){
+        //그냥 이렇게만 하면 오늘 날짜가 포함된 주만 나옴
+        //swipe시, 달이 계속 바뀜
+        //Adapter 부분을 수정해야할듯?
+
+        //day = Calendar.getInstance().get(Calendar.DATE);
+        //이거의 문제점은 무조건 현재 시간을 기준으로만 나옴......
 
         //day = sDay.get(Calendar.DATE);
-        /**원래 이건데...... 이렇게 하면 무조건 1일로 됨...**/
+        //원래 이건데...... 이렇게 하면 무조건 1일로 됨...
 
         Calendar today = Calendar.getInstance();
+        today.set(year, month, day);
+        int x = 0;
+        int max = today.getActualMaximum(Calendar.DATE);
+        String[] date = new String[7];
+
+        /*for(int i=0; i<7; i++){
+            date[i] = day+"";
+        }*/
+
+        for(int i=day; i<=max; i++){
+            if(x >= 7)
+                break;
+            date[x++] = i+"";
+        }
+        if(x < 7){
+            for (; x < 7; x++) {
+                date[x] = "";
+            }
+        }
+
+
+        /*if(day<=0){
+            for(int i=0; i<7; i++){
+                date[i] = 11+"";
+            }
+        }
+
+        else if(day>today.getActualMaximum(Calendar.DATE)){
+            for(int i=0; i<7; i++){
+                date[i] = 12+"";
+            }
+        }
+
+        else{
+            for(int i=0; i<7; i++){
+                date[i] = 13+"";
+            }
+        }*/
+
+
+
+        /*for(int i=0; i<7; i++){
+            date[i] = 12+"";
+        }*/
+
+
+        /*int i=0;
+        int x = today.get(Calendar.DATE);
+        String[] date = new String[7];
+
+        for(; x<=today.getActualMaximum(Calendar.DATE) ; x++) {
+            date[i++] = x + "";
+        }
+        if(i < 7){
+            for (; i < 7; i++) {
+                date[i] = "";
+            }
+        }*/
+
+        return date;
+
+        /*Calendar today = Calendar.getInstance();
         today.set(year, month, day);
         int week = today.get(Calendar.WEEK_OF_MONTH);
         int x = 0;
         String[] date = new String[7];
 
-        for(int i=1; i<=today.getActualMaximum(Calendar.DATE) /*&& x<7*/; i++){
+        for(int i=1; i<=today.getActualMaximum(Calendar.DATE) ; i++){
             today.set(year, month, i);
             if((today.get(Calendar.WEEK_OF_MONTH) == week)){
                 //해당 주를 get해서 week랑 똑같으면
@@ -99,18 +178,20 @@ public class MonthCalendarFragment extends Fragment {
             }
         }
 
-        return date;
+        return date;*/
+
+
 
     }
 
-    public static String[] getGrid() {
+    /*public static String[] getGrid() {
         String[] grid = new String[24*7];
 
         for(int i=0; i<=grid.length; i++) {
             grid[i] = "";
         }
         return grid;
-    }
+    }*/
 
 
     public static String[] getItem(int year, int month){
@@ -148,13 +229,14 @@ public class MonthCalendarFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getInt(ARG_PARAM1);
             mParam2 = getArguments().getInt(ARG_PARAM2);
+            mParam3 = getArguments().getInt(ARG_PARAM3);
         }
         else{
             mParam1 = Calendar.getInstance().get(Calendar.YEAR);
             mParam2 = Calendar.getInstance().get(Calendar.MONTH); //month 는 0부터 시작
+            mParam3 = -1;
         }
 
-        //((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParam1+"년"+mParam2+"월");
     }
 
     @Override
@@ -163,44 +245,39 @@ public class MonthCalendarFragment extends Fragment {
 
         View rootview = inflater.inflate(R.layout.fragment_month_calendar, container, false);
 
-//        switch(R.menu.main_menu) {
-//            case R.id.month_view:
-//
-//                String[] date = getItem(mParam1,mParam2);
-//                /**String[] date = getDay(mParam1,mParam2); 하면
-//                 * 오늘이 속해있는 주의 날들이 한줄에 나옴**/
-//                /**그런데 문제는 그 다음주로 날짜들이 넘어가지 않는다는 것**/
-//
-//                GridView gridView = (GridView) rootview.findViewById(R.id.gridview);
-//                ArrayAdapter<String> GridViewAdapter = new ArrayAdapter<String>(
-//                        getActivity(),
-//                        android.R.layout.simple_list_item_1,
-//                        date);
-//                gridView.setAdapter(GridViewAdapter);
-//
-//            case R.id.week_view:
-                String[] day = getDay(mParam1,mParam2);
-                GridView wGridview = (GridView) rootview.findViewById(R.id.gridview);
-                ArrayAdapter<String> wGridViewAdapter = new ArrayAdapter<String>(
-                        getActivity(),
-                        android.R.layout.simple_list_item_1,
-                        day);
-                wGridview.setAdapter(wGridViewAdapter);
+        if(mParam3 == -1){
+            String[] date = getItem(mParam1, mParam2);
+            //String[] date = getDay(mParam1,mParam2); 하면
+            //오늘이 속해있는 주의 날들이 한줄에 나옴
+            //그런데 문제는 그 다음주로 날짜들이 넘어가지 않는다는 것
 
-//            default:
-//                date = getItem(mParam1,mParam2);
-//
-//                gridView = (GridView) rootview.findViewById(R.id.gridview);
-//                GridViewAdapter = new ArrayAdapter<String>(
-//                        getActivity(),
-//                        android.R.layout.simple_list_item_1,
-//                        date);
-//                gridView.setAdapter(GridViewAdapter);
-//        }
+            GridView gridView = (GridView) rootview.findViewById(R.id.gridview);
+            ArrayAdapter<String> GridViewAdapter = new ArrayAdapter<String>(
+                    getActivity(),
+                    android.R.layout.simple_list_item_1,
+                    date);
+            gridView.setAdapter(GridViewAdapter);
+        }
+
+        else{
+            /*TextView textView = (TextView)rootview.findViewById(R.id.textview);
+            textView.setText(mParam3+"");*/
+            String[] day = getDay(mParam1, mParam2, mParam3);
+            GridView wGridview = (GridView) rootview.findViewById(R.id.gridview);
+            ArrayAdapter<String> wGridViewAdapter = new ArrayAdapter<String>(
+                    getActivity(),
+                    android.R.layout.simple_list_item_1,
+                    day);
+            wGridview.setAdapter(wGridViewAdapter);
+        }
+
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParam1+"년"+(mParam2+1)+"월");
         TextView textView = (TextView)rootview.findViewById(R.id.textview);
         textView.setText(mParam1+"년"+(mParam2+1)+"월");
+
+
+        //textView.setText(getId()+"");
 
         return rootview;
     }
