@@ -32,10 +32,11 @@ public class MonthCalendarAdapter extends FragmentStateAdapter{
                 month = Calendar.getInstance().get(Calendar.MONTH);
                 day = Calendar.getInstance().get(Calendar.DATE);
                 num1++;
+                preposition = position;
                 return MonthCalendarFragment.newInstance(year, month);
             }
-            day = 1;
 
+            day = 1;
             if(preposition > position){ //이전으로 넘겼을 때
                 if(month == 0){ //현재 month값이 0(1월)일 때
                     year--;
@@ -44,9 +45,6 @@ public class MonthCalendarAdapter extends FragmentStateAdapter{
                 else if(turn != 2){
                     month--;
                 }
-                /*else {
-                    month--;
-                }*/
             }
 
             else if(preposition < position){  //다음으로 넘겼을 때
@@ -57,9 +55,6 @@ public class MonthCalendarAdapter extends FragmentStateAdapter{
                 else if(turn != 2){
                     month++;
                 }
-                /*else {
-                    month++;
-                }*/
             }
 
             preposition = position;
@@ -72,19 +67,20 @@ public class MonthCalendarAdapter extends FragmentStateAdapter{
             Calendar today = Calendar.getInstance();
             today.set(year, month, day);
             if(num2 == 0){
-                while(today.get(Calendar.DAY_OF_WEEK) != 1){
+                while(today.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY){
                     today.add(Calendar.DATE,-1);
                 }
                 year = today.get(Calendar.YEAR);
                 month = today.get(Calendar.MONTH);
                 day = today.get(Calendar.DATE);
                 num2++;
+                preposition = position;
                 return MonthCalendarFragment.newInstance(year, month, day);
             }
 
             if(preposition > position){ //이전으로 넘겼을 때
                 if(turn != 1) {
-                    while (today.get(Calendar.DAY_OF_WEEK) != 1) {
+                    while (today.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
                         today.add(Calendar.DATE, -1);
                     }
                     today.add(Calendar.DATE, -7);
@@ -96,7 +92,7 @@ public class MonthCalendarAdapter extends FragmentStateAdapter{
 
             else if(preposition < position){  //다음으로 넘겼을 때
                 if(turn != 1) {
-                    while (today.get(Calendar.DAY_OF_WEEK) != 1) {
+                    while (today.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
                         today.add(Calendar.DATE, -1);
                     }
                     today.add(Calendar.DATE, 7);
