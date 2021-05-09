@@ -90,11 +90,7 @@ public class MonthCalendarFragment extends Fragment {
             else
                 break;
         }
-        if (x < 7) { //나머지 배열에 저장
-            for (; x < 7; x++) {
-                date[x] = (y++) + "";
-            }
-        }
+
 
         return date;
     }
