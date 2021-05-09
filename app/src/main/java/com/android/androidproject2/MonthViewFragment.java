@@ -3,19 +3,12 @@ package com.android.androidproject2;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
-
 import java.util.Calendar;
 
 /**
@@ -38,7 +31,6 @@ public class MonthViewFragment extends Fragment {
     public MonthViewFragment() {
 
     }
-
 
     // TODO: Rename and change types and number of parameters
     public static MonthViewFragment newInstance(int year, int month) {
@@ -73,22 +65,11 @@ public class MonthViewFragment extends Fragment {
 
         View rootview = inflater.inflate(R.layout.fragment_month_view, container, false);
 
-
         ViewPager2 vpPager = rootview.findViewById(R.id.vpPager);
-        FragmentStateAdapter adapter = new MonthCalendarAdapter(this,"MonthViewFragment");
+        FragmentStateAdapter adapter = new MonthCalendarAdapter(this,"MonthViewFragment"); //호출한 fragment를 구분하기 위해 현재 ragment이름을 넘겨줌
         vpPager.setAdapter(adapter);
 
-        vpPager.setCurrentItem(50,false);
-
-
-
-        //vpPager.setCurrentItem(50,false);
-
-        /*if(num == 0){ //처음 생성되었을 때 한번만 초기화해주기 위해서
-            vpPager.setCurrentItem(50);
-            num++;
-        }*/
-
+        vpPager.setCurrentItem(50,false); //50페이지로 설정, 애니메이션 전환 false
 
         return rootview;
     }
