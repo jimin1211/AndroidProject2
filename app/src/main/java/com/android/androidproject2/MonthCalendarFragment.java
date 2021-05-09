@@ -77,7 +77,7 @@ public class MonthCalendarFragment extends Fragment {
     }
 
     /**주간 달력 배열 생성**/
-    public static String[] getDay(int year, int month, int day) {
+    public String[] getDay(int year, int month, int day) {
         Calendar today = Calendar.getInstance();
         today.set(year, month, day); //파라미터로 받아온 year, month, day값 이용하여 날짜 설정
         int x = 0, y = 1;
@@ -201,7 +201,7 @@ public class MonthCalendarFragment extends Fragment {
                         Toast.makeText((AppCompatActivity) getActivity(),
                                 mParam1 + "년" + (mParam2 + 1) + "월" + wGridview.getItemAtPosition(position) + "일", Toast.LENGTH_SHORT).show();
                         //일의 정보는 position정보를 통해 text를 가져옴
-                        wGridview.setSelector(new PaintDrawable(Color.GREEN)); //배경색을 GREEN으로 변경
+                        wGridview.setSelector(new PaintDrawable(Color.CYAN)); //배경색을 CYAN으로 변경
                     }
                 }
             });

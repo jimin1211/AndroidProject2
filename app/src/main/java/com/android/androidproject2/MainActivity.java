@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.main_menu, menu);
         //main_menu.xml 에 의하여 정의된 메뉴 리소스가 Menu 객체로 팽창됨
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
