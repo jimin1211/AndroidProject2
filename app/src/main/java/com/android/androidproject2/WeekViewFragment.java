@@ -74,7 +74,7 @@ public class WeekViewFragment extends Fragment {
         //inflate() 함수통해 fragment_week_view 파일로부터 레이아웃 로드하여 rootview에 저장
         ViewPager2 vpPager = rootview.findViewById(R.id.vpPager);
         FragmentStateAdapter adapter = new MonthCalendarAdapter(this,"WeekViewFragment");
-        //호출한 fragment를 구분하기 위해 현재 fragment이름을 넘겨줌
+        //호출한 fragment를 구분하기 위해 현재 fragment 이름을 넘겨줌
         vpPager.setAdapter(adapter);
         //ViewPager2는 FragmentStateAdapter의 객체 adapter 통해 각 페이지에 표시될 정보 제공받음
 
