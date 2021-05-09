@@ -73,18 +73,18 @@ public class MonthCalendarAdapter extends FragmentStateAdapter{
             if(turn != 1) { //월간 달력에서 "주" 오버플로우 메뉴를 누른 상황이 아닐 때(그냥 주간 달력에서 swipe했을 때)
                 if (preposition > position) { //이전으로 넘겼을 때
                     while (today.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) { //해당 주의 일요일로 만들어주기 위해
-                            today.add(Calendar.DATE, -1); //일요일이 될 때까지 하루 전으로 이동
-                        }
-                        today.add(Calendar.DATE, -7); //일주일 전으로 이동
+                        today.add(Calendar.DATE, -1); //일요일이 될 때까지 하루 전으로 이동
+                    }
+                    today.add(Calendar.DATE, -7); //일주일 전으로 이동
                     //이동한 날의 날짜를 구함
                     year = today.get(Calendar.YEAR);
                     month = today.get(Calendar.MONTH);
                     day = today.get(Calendar.DATE);
                 } else if (preposition < position) {  //다음으로 넘겼을 때
-                        while (today.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) { //해당 주의 일요일로 만들어주기 위해
-                            today.add(Calendar.DATE, -1); //일요일이 될 때까지 하루 전으로 이동
-                        }
-                        today.add(Calendar.DATE, 7); //일주일 후로 이동
+                    while (today.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) { //해당 주의 일요일로 만들어주기 위해
+                        today.add(Calendar.DATE, -1); //일요일이 될 때까지 하루 전으로 이동
+                    }
+                    today.add(Calendar.DATE, 7); //일주일 후로 이동
                     //이동한 날의 날짜를 구함
                     year = today.get(Calendar.YEAR);
                     month = today.get(Calendar.MONTH);

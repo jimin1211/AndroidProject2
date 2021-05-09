@@ -33,8 +33,7 @@ public class MonthCalendarFragment extends Fragment {
 
     static Calendar sDay = Calendar.getInstance(); //시작일;
     static int START_DAY_OF_WEEK; //시작일의 요일(1일의 요일)을 알아냄
-    static int END_DAY;
-    //static int day;
+    static int END_DAY; //한 달의 마지막 날짜 알아냄
 
     // TODO: Rename and change types of parameters
     private int mParam1;
@@ -46,52 +45,68 @@ public class MonthCalendarFragment extends Fragment {
     }
 
     // TODO: Rename and change types and number of parameters
-    public static MonthCalendarFragment newInstance(int year, int month) { //파라미터가 2개 -> 월간달력
+    /**파라미터가 2개 -> 월간달력**/
+    public static MonthCalendarFragment newInstance(int year, int month) {
         MonthCalendarFragment fragment = new MonthCalendarFragment();
+        //MonthCalendarFragment 객체 생성
         Bundle args = new Bundle();
+        //Bundle 객체 생성
         args.putInt(ARG_PARAM1, year);
+        //ARG_PARAM1에 year 값 넣어 args에 저장
         args.putInt(ARG_PARAM2, month);
-        args.putInt(ARG_PARAM3, -1); //mParam1에 해당하는 값을 -1로 만듦(월간 달력과 주간 달력을 구분하기 위해 전달되지 않은 day 값을 -1로 설정)
+        //ARG_PARAM2에 month 값 넣어 args에 저장
+        args.putInt(ARG_PARAM3, -1);
+        //mParam1에 해당하는 값을 -1로 만듦(월간 달력과 주간 달력을 구분하기 위해 전달되지 않은 day 값을 -1로 설정)
         fragment.setArguments(args);
-        return fragment;
+        //args를 매개변수로 한 setArguments() 메소드 수행하여 fragment에 저장
+        return fragment; //fragment 반환
     }
 
-    public static MonthCalendarFragment newInstance(int year, int month, int day) { //파라미터 3개 -> 주간달력
+    /**파라미터 3개 -> 주간달력**/
+    public static MonthCalendarFragment newInstance(int year, int month, int day) {
         MonthCalendarFragment fragment = new MonthCalendarFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, year);
+        //ARG_PARAM1에 year 값 넣어 args에 저장
         args.putInt(ARG_PARAM2, month);
+        //ARG_PARAM2에 month 값 넣어 args에 저장
         args.putInt(ARG_PARAM3, day);
+        //ARG_PARAM3에 day 값 넣어 args에 저장
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static String[] getDay(int year, int month, int day) { //주간 달력 배열 생성
+    /**주간 달력 배열 생성**/
+    public static String[] getDay(int year, int month, int day) {
         Calendar today = Calendar.getInstance();
-        today.set(year, month, day); //파라미터로 넘겨온 날로 설정
+        today.set(year, month, day); //파라미터로 받아온 year, month, day값 이용하여 날짜 설정
         int x = 0, y = 1;
         END_DAY = today.getActualMaximum(Calendar.DATE); //해당 월의 마지막 날짜를 알아냄
-        String[] date = new String[7];
+        String[] date = new String[7]; //1*7사이즈의 String형 배열을 선언
 
-        for (int i = day; i <= END_DAY; i++) { //파라미터로 받은 day부터 마지막 날짜까지
-            if(x>=7)
+        for (int i = day; i <= END_DAY; i++) { //파라미터로 받은 day부터 마지막 날짜까지 도는 반복문 생성
+            if(x<7)
+                date[x++] = i + ""; //date 배열에 날짜(i) 저장
+            else
                 break;
-            date[x++] = i + ""; //date배열에 날짜 저장
         }
         if (x < 7) { //나머지 배열에 저장
             for (; x < 7; x++) {
                 date[x] = (y++) + "";
             }
         }
+
         return date;
     }
 
-    public static String[] getItem(int year, int month){ //월간 달력 배열 생성
+    /**월간 달력 배열 생성**/
+    public static String[] getItem(int year, int month){
         String[] date = new String[6*7]; //6*7사이즈의 String형 배열을 선언
 
-        sDay.set(year,month,1);
+        sDay.set(year,month,1); //sDay를 현재 년도,월의 1일로 설정
         START_DAY_OF_WEEK = sDay.get(Calendar.DAY_OF_WEEK); //시작일의 요일(1일의 요일)을 알아냄
         END_DAY = sDay.getActualMaximum(Calendar.DATE); //현재 월의 마지막 날짜를 알아냄
+
         //배열에 요일 입력
         for(int i=0, n=1; i<date.length; i++){
             if(i < START_DAY_OF_WEEK-1)  //date배열에 첫번째 요일 전까지 공백으로 채움
@@ -112,14 +127,19 @@ public class MonthCalendarFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        if (getArguments() != null) { //getArguments() 메소드가 비어있지 않은 경우
             mParam1 = getArguments().getInt(ARG_PARAM1);
+            //ARG_PARAM1에 저장된 정수값 가져와서 mParam1에 저장
             mParam2 = getArguments().getInt(ARG_PARAM2);
+            //ARG_PARAM2에 저장된 정수값 가져와서 mParam2에 저장
             mParam3 = getArguments().getInt(ARG_PARAM3);
+            //ARG_PARAM3에 저장된 정수값 가져와서 mParam3에 저장
         }
-        else{
+        else{ //getArguments() 메소드가 비어있는 경우
             mParam1 = Calendar.getInstance().get(Calendar.YEAR);
-            mParam2 = Calendar.getInstance().get(Calendar.MONTH); //month 는 0부터 시작
+            //mParam1에 현재 년도 정보 저장
+            mParam2 = Calendar.getInstance().get(Calendar.MONTH);
+            //mParam1에 현재 년도 정보 저장 (이때 month 는 0부터 시작)
             mParam3 = -1;
         }
     }
@@ -129,6 +149,7 @@ public class MonthCalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootview = inflater.inflate(R.layout.fragment_month_calendar, container, false);
+        //inflate() 함수 통해 fragment_month_calendar 파일로부터 레이아웃 로드하여 rootview에 저장
 
         if(mParam3 == -1){ //mParam3이 -1이면 월간달력 생성
             String[] date = getItem(mParam1, mParam2); //mParam1년 mParam2월의 월간달력 배열 얻어옴
@@ -142,6 +163,7 @@ public class MonthCalendarFragment extends Fragment {
                     date);
             //어댑터를 GridView 객체에 연결
             gridView.setAdapter(GridViewAdapter);
+
 
             //선택된 날짜 정보를 토스트 메세지로 표시
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -179,13 +201,14 @@ public class MonthCalendarFragment extends Fragment {
                         Toast.makeText((AppCompatActivity) getActivity(),
                                 mParam1 + "년" + (mParam2 + 1) + "월" + wGridview.getItemAtPosition(position) + "일", Toast.LENGTH_SHORT).show();
                         //일의 정보는 position정보를 통해 text를 가져옴
-                        wGridview.setSelector(new PaintDrawable(Color.CYAN)); //배경색을 CYAN으로 변경
+                        wGridview.setSelector(new PaintDrawable(Color.GREEN)); //배경색을 GREEN으로 변경
                     }
                 }
             });
         }
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParam1+"년"+(mParam2+1)+"월"); //앱바에 현재 표시된 달력의 연월을 표시
-        return rootview;
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParam1+"년"+(mParam2+1)+"월");
+        //앱바에 현재 표시된 달력의 연월을 표시
+        return rootview; //rootview 반환
     }
 }
