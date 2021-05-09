@@ -1,16 +1,20 @@
 package com.android.androidproject2;
 
+import android.graphics.Color;
+import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
 
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
@@ -159,12 +163,7 @@ public class MonthCalendarFragment extends Fragment {
 
     public static String[] getItem(int year, int month){
 
-        //Calendar sDay = Calendar.getInstance(); //시작일;
-        //int START_DAY_OF_WEEK; //시작일의 요일(1일의 요일)을 알아냄
-        //int END_DAY;
         String[] date = new String[6*7]; //6*7사이즈의 String형 배열을 선언
-
-        //View rootview = inflater.inflate(R.layout.fragment_month_view, container, false);
 
         sDay.set(year,month,1);
         START_DAY_OF_WEEK = sDay.get(Calendar.DAY_OF_WEEK); //시작일의 요일(1일의 요일)을 알아냄
@@ -210,9 +209,6 @@ public class MonthCalendarFragment extends Fragment {
 
         if(mParam3 == -1){
             String[] date = getItem(mParam1, mParam2);
-            //String[] date = getDay(mParam1,mParam2); 하면
-            //오늘이 속해있는 주의 날들이 한줄에 나옴
-            //그런데 문제는 그 다음주로 날짜들이 넘어가지 않는다는 것
 
             GridView gridView = (GridView) rootview.findViewById(R.id.gridview);
             ArrayAdapter<String> GridViewAdapter = new ArrayAdapter<String>(
@@ -220,28 +216,48 @@ public class MonthCalendarFragment extends Fragment {
                     android.R.layout.simple_list_item_1,
                     date);
             gridView.setAdapter(GridViewAdapter);
+
+            // 항목 클릭시 위치값과 값 토스트로 출력
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    if(!(date[position].equals(""))) { //date[position]값이 공백이 아닐 경우만 toast 메세지 출력
+                        Toast.makeText((AppCompatActivity) getActivity(),
+                                mParam1 + "년" + (mParam2 + 1) + "월" + gridView.getItemAtPosition(position) + "일", Toast.LENGTH_SHORT).show();
+                        gridView.setSelector(new PaintDrawable(Color.CYAN));
+                    }
+                }
+            });
         }
 
         else{
             /*TextView textView = (TextView)rootview.findViewById(R.id.textview);
             textView.setText(mParam3+"");*/
             String[] day = getDay(mParam1, mParam2, mParam3);
-            GridView wGridview = (GridView) rootview.findViewById(R.id.gridview1);
+            GridView wGridview = (GridView) rootview.findViewById(R.id.gridview);
             ArrayAdapter<String> wGridViewAdapter = new ArrayAdapter<String>(
                     getActivity(),
                     android.R.layout.simple_list_item_1,
                     day);
             wGridview.setAdapter(wGridViewAdapter);
+
+            // 항목 클릭시 위치값과 값 토스트로 출력
+            wGridview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    if(!(day[position].equals(""))) { //date[position]값이 공백이 아닐 경우만 toast 메세지 출력
+                        Toast.makeText((AppCompatActivity) getActivity(),
+                                mParam1 + "년" + (mParam2 + 1) + "월" + wGridview.getItemAtPosition(position) + "일", Toast.LENGTH_SHORT).show();
+                        wGridview.setSelector(new PaintDrawable(Color.CYAN));
+                    }
+                }
+            });
+
         }
 
-
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParam1+"년"+(mParam2+1)+"월");
-        TextView textView = (TextView)rootview.findViewById(R.id.textview);
-        textView.setText(mParam1+"년"+(mParam2+1)+"월");
-
-
-        //textView.setText(getId()+"");
-
         return rootview;
     }
 }
