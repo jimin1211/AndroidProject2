@@ -72,9 +72,11 @@ public class MonthCalendarAdapter extends FragmentStateAdapter{
             Calendar today = Calendar.getInstance();
             today.set(year, month, day);
             if(num2 == 0){
-                if(today.get(Calendar.DAY_OF_WEEK) == 1){
+                while(today.get(Calendar.DAY_OF_WEEK) != 1){
                     today.add(Calendar.DATE,-1);
                 }
+                year = today.get(Calendar.YEAR);
+                month = today.get(Calendar.MONTH);
                 day = today.get(Calendar.DATE);
                 num2++;
                 return MonthCalendarFragment.newInstance(year, month, day);

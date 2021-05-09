@@ -43,18 +43,16 @@ public class MonthCalendarFragment extends Fragment {
     static Calendar sDay = Calendar.getInstance(); //시작일;
     static int START_DAY_OF_WEEK; //시작일의 요일(1일의 요일)을 알아냄
     static int END_DAY;
-    static int day;
+    //static int day;
 
     // TODO: Rename and change types of parameters
     private int mParam1;
     private int mParam2;
     private int mParam3;
 
-
     public MonthCalendarFragment() {
         // Required empty public constructor
     }
-
 
     // TODO: Rename and change types and number of parameters
     public static MonthCalendarFragment newInstance(int year, int month) {
@@ -84,10 +82,13 @@ public class MonthCalendarFragment extends Fragment {
         int max = today.getActualMaximum(Calendar.DATE);
         String[] date = new String[7];
 
-        int week = today.get(Calendar.WEEK_OF_MONTH);
-        for (int i = 1; i <= today.getActualMaximum(Calendar.DATE); i++) {
-            today.set(year, month, i);
-            if ((today.get(Calendar.WEEK_OF_MONTH) == week)) {
+        //int week = today.get(Calendar.WEEK_OF_MONTH);
+        for (int i = day; i <= max; i++) {
+            //today.set(year, month, i);
+            if(x>=7)
+                break;
+            date[x++] = i + "";
+            /*if ((today.get(Calendar.WEEK_OF_MONTH) == week)) {
                 //해당 주를 get해서 week랑 똑같으면
                 //그 주 일요일부터 그냥 for문으로 집어넣기!!!
 
@@ -101,7 +102,7 @@ public class MonthCalendarFragment extends Fragment {
                     date[x++] = i + "";
                     //date[x++] = today.get(Calendar.DAY_OF_WEEK)+"";
                 }
-            }
+            }*/
 
         }
         if (x < 7) {
