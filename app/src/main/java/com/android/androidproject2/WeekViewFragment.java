@@ -65,28 +65,11 @@ public class WeekViewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_week_view, container, false);
 
-
-        /*String[] week = new String[24*7];
-        for(int i=0; i<24*7; i++){
-            if(i%7 == 0)
-                week[i] = i/7+"";
-            else
-                week[i] = "";
-        }
-        GridView gridView = (GridView) rootview.findViewById(R.id.week_view);
-        ArrayAdapter<String> GridViewAdapter = new ArrayAdapter<String>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                week);
-        gridView.setAdapter(GridViewAdapter);*/
-
-
         ViewPager2 vpPager = rootview.findViewById(R.id.vpPager);
-        FragmentStateAdapter adapter = new MonthCalendarAdapter(this,"WeekViewFragment");
+        FragmentStateAdapter adapter = new MonthCalendarAdapter(this,"WeekViewFragment"); //호출한 fragment를 구분하기 위해 현재 ragment이름을 넘겨줌
         vpPager.setAdapter(adapter);
 
-        vpPager.setCurrentItem(50,false);
-
+        vpPager.setCurrentItem(50,false); //50페이지로 설정, 애니메이션 전환 false
 
         return rootview;
     }

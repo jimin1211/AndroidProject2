@@ -55,17 +55,17 @@ public class MonthCalendarFragment extends Fragment {
     }
 
     // TODO: Rename and change types and number of parameters
-    public static MonthCalendarFragment newInstance(int year, int month) {
+    public static MonthCalendarFragment newInstance(int year, int month) { //파라미터가 2개 -> 월간달력
         MonthCalendarFragment fragment = new MonthCalendarFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, year);
         args.putInt(ARG_PARAM2, month);
-        args.putInt(ARG_PARAM3, -1);
+        args.putInt(ARG_PARAM3, -1); //mParam1에 해당하는 값을 -1로 만듦(월간 달력과 주간 달력을 구분하기 위해 전달되지 않은 day 값을 -1로 설정)
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static MonthCalendarFragment newInstance(int year, int month, int day) {
+    public static MonthCalendarFragment newInstance(int year, int month, int day) { //파라미터 3개 -> 주간달력
         MonthCalendarFragment fragment = new MonthCalendarFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, year);
@@ -75,95 +75,27 @@ public class MonthCalendarFragment extends Fragment {
         return fragment;
     }
 
-    public static String[] getDay(int year, int month, int day) {
+    public static String[] getDay(int year, int month, int day) { //주간 달력 배열 생성
         Calendar today = Calendar.getInstance();
-        today.set(year, month, day);
-        int x = 0;
-        int max = today.getActualMaximum(Calendar.DATE);
+        today.set(year, month, day); //파라미터로 넘겨온 날로 설정
+        int x = 0, y = 1;
+        END_DAY = today.getActualMaximum(Calendar.DATE); //해당 월의 마지막 날짜를 알아냄
         String[] date = new String[7];
 
-        //int week = today.get(Calendar.WEEK_OF_MONTH);
-        for (int i = day; i <= max; i++) {
-            //today.set(year, month, i);
+        for (int i = day; i <= END_DAY; i++) { //파라미터로 받은 day부터 마지막 날짜까지
             if(x>=7)
                 break;
-            date[x++] = i + "";
-            /*if ((today.get(Calendar.WEEK_OF_MONTH) == week)) {
-                //해당 주를 get해서 week랑 똑같으면
-                //그 주 일요일부터 그냥 for문으로 집어넣기!!!
-
-                if (x < today.get(Calendar.DAY_OF_WEEK) - 1) {
-                    for (; x < today.get(Calendar.DAY_OF_WEEK) - 1; ) {
-                        date[x++] = "";
-                    }
-                    date[x++] = i + "";
-                    //date[x++] = today.get(Calendar.DAY_OF_WEEK)+"";
-                } else {
-                    date[x++] = i + "";
-                    //date[x++] = today.get(Calendar.DAY_OF_WEEK)+"";
-                }
-            }*/
-
+            date[x++] = i + ""; //date배열에 날짜 저장
         }
-        if (x < 7) {
+        if (x < 7) { //나머지 배열에 저장
             for (; x < 7; x++) {
-                date[x] = "";
+                date[x] = (y++) + "";
             }
         }
-
         return date;
-
-
-        /*Calendar today = Calendar.getInstance();
-        today.set(year, month, day);
-        int week = today.get(Calendar.WEEK_OF_MONTH);
-        int x = 0;
-        String[] date = new String[7];
-
-        for(int i=1; i<=today.getActualMaximum(Calendar.DATE) ; i++){
-            today.set(year, month, i);
-            if((today.get(Calendar.WEEK_OF_MONTH) == week)){
-                //해당 주를 get해서 week랑 똑같으면
-                //그 주 일요일부터 그냥 for문으로 집어넣기!!!
-
-                if(x < today.get(Calendar.DAY_OF_WEEK)-1){
-                    for(; x < today.get(Calendar.DAY_OF_WEEK)-1; ){
-                        date[x++] = x+"";
-                    }
-                    date[x++] = i+"";
-                    //date[x++] = today.get(Calendar.DAY_OF_WEEK)+"";
-                }
-                else{
-                    date[x++] = i+"";
-                    //date[x++] = today.get(Calendar.DAY_OF_WEEK)+"";
-                }
-            }
-
-        }
-        if(x < 7){
-            for (; x < 7; x++) {
-                date[x] = "";
-            }
-        }
-
-        return date;*/
-
-
-
     }
 
-    /*public static String[] getGrid() {
-        String[] grid = new String[24*7];
-
-        for(int i=0; i<=grid.length; i++) {
-            grid[i] = "";
-        }
-        return grid;
-    }*/
-
-
-    public static String[] getItem(int year, int month){
-
+    public static String[] getItem(int year, int month){ //월간 달력 배열 생성
         String[] date = new String[6*7]; //6*7사이즈의 String형 배열을 선언
 
         sDay.set(year,month,1);
@@ -199,7 +131,6 @@ public class MonthCalendarFragment extends Fragment {
             mParam2 = Calendar.getInstance().get(Calendar.MONTH); //month 는 0부터 시작
             mParam3 = -1;
         }
-
     }
 
     @Override
@@ -208,17 +139,20 @@ public class MonthCalendarFragment extends Fragment {
 
         View rootview = inflater.inflate(R.layout.fragment_month_calendar, container, false);
 
-        if(mParam3 == -1){
-            String[] date = getItem(mParam1, mParam2);
+        if(mParam3 == -1){ //mParam3이 -1이면 월간달력 생성
+            String[] date = getItem(mParam1, mParam2); //mParam1년 mParam2월의 월간달력 배열 얻어옴
 
+            //girdview id를 가진 화면 레이아웃에 정의된 GridVies 객체 로딩
             GridView gridView = (GridView) rootview.findViewById(R.id.gridview);
+            //어댑터 준비 (date 배열 객체 이용, simple_list_item_1 리소스 사용)
             ArrayAdapter<String> GridViewAdapter = new ArrayAdapter<String>(
                     getActivity(),
                     android.R.layout.simple_list_item_1,
                     date);
+            //어댑터를 GridView 객체에 연결
             gridView.setAdapter(GridViewAdapter);
 
-            // 항목 클릭시 위치값과 값 토스트로 출력
+            //선택된 날짜 정보를 토스트 메세지로 표시
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
@@ -226,21 +160,23 @@ public class MonthCalendarFragment extends Fragment {
                     if(!(date[position].equals(""))) { //date[position]값이 공백이 아닐 경우만 toast 메세지 출력
                         Toast.makeText((AppCompatActivity) getActivity(),
                                 mParam1 + "년" + (mParam2 + 1) + "월" + gridView.getItemAtPosition(position) + "일", Toast.LENGTH_SHORT).show();
-                        gridView.setSelector(new PaintDrawable(Color.CYAN));
+                        //일의 정보는 position정보를 통해 text를 가져옴
+                        gridView.setSelector(new PaintDrawable(Color.CYAN)); //배경색을 CYAN으로 변경
                     }
                 }
             });
         }
 
-        else{
-            /*TextView textView = (TextView)rootview.findViewById(R.id.textview);
-            textView.setText(mParam3+"");*/
-            String[] day = getDay(mParam1, mParam2, mParam3);
+        else{ //주간 달력 생성
+            String[] day = getDay(mParam1, mParam2, mParam3); //mParam1년 mParam2월 mParam3일의 주간달력 배열 얻어옴
+            //girdview id를 가진 화면 레이아웃에 정의된 GridVies 객체 로딩
             GridView wGridview = (GridView) rootview.findViewById(R.id.gridview);
+            //어댑터 준비 (day 배열 객체 이용, simple_list_item_1 리소스 사용)
             ArrayAdapter<String> wGridViewAdapter = new ArrayAdapter<String>(
                     getActivity(),
                     android.R.layout.simple_list_item_1,
                     day);
+            //어댑터를 GridView 객체에 연결
             wGridview.setAdapter(wGridViewAdapter);
 
             // 항목 클릭시 위치값과 값 토스트로 출력
@@ -251,14 +187,14 @@ public class MonthCalendarFragment extends Fragment {
                     if(!(day[position].equals(""))) { //date[position]값이 공백이 아닐 경우만 toast 메세지 출력
                         Toast.makeText((AppCompatActivity) getActivity(),
                                 mParam1 + "년" + (mParam2 + 1) + "월" + wGridview.getItemAtPosition(position) + "일", Toast.LENGTH_SHORT).show();
-                        wGridview.setSelector(new PaintDrawable(Color.CYAN));
+                        //일의 정보는 position정보를 통해 text를 가져옴
+                        wGridview.setSelector(new PaintDrawable(Color.CYAN)); //배경색을 CYAN으로 변경
                     }
                 }
             });
-
         }
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParam1+"년"+(mParam2+1)+"월");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParam1+"년"+(mParam2+1)+"월"); //앱바에 현재 표시된 달력의 연월을 표시
         return rootview;
     }
 }
