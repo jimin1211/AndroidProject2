@@ -170,11 +170,11 @@ public class MonthCalendarFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    if(!(date[position].equals(""))) { //date[position]값이 공백이 아닐 경우만 toast 메세지 출력
+                    if(!(parent.getAdapter().getItem(position).equals(""))) { //date[position]값이 공백이 아닐 경우만 toast 메세지 출력
                         Toast.makeText((AppCompatActivity) getActivity(),
-                                mParam1 + "년" + (mParam2 + 1) + "월" + gridView.getItemAtPosition(position) + "일", Toast.LENGTH_SHORT).show();
+                                mParam1 + "년" + (mParam2 + 1) + "월" + ((GridView)parent).getItemAtPosition(position) + "일", Toast.LENGTH_SHORT).show();
                         //일의 정보는 position정보를 통해 text를 가져옴
-                        gridView.setSelector(new PaintDrawable(Color.CYAN)); //배경색을 CYAN으로 변경
+                        ((GridView)parent).setSelector(new PaintDrawable(Color.CYAN)); //배경색을 CYAN으로 변경
                     }
                 }
             });
@@ -197,11 +197,11 @@ public class MonthCalendarFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    if(!(day[position].equals(""))) { //date[position]값이 공백이 아닐 경우만 toast 메세지 출력
+                    if(!(parent.getAdapter().getItem(position).equals(""))) { //date[position]값이 공백이 아닐 경우만 toast 메세지 출력
                         Toast.makeText((AppCompatActivity) getActivity(),
-                                mParam1 + "년" + (mParam2 + 1) + "월" + wGridview.getItemAtPosition(position) + "일", Toast.LENGTH_SHORT).show();
+                                mParam1 + "년" + (mParam2 + 1) + "월" + ((GridView)parent).getItemAtPosition(position) + "일", Toast.LENGTH_SHORT).show();
                         //일의 정보는 position정보를 통해 text를 가져옴
-                        wGridview.setSelector(new PaintDrawable(Color.CYAN)); //배경색을 CYAN으로 변경
+                        ((GridView)parent).setSelector(new PaintDrawable(Color.CYAN)); //배경색을 CYAN으로 변경
                     }
                 }
             });
