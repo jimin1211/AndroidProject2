@@ -7,14 +7,24 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.text.method.ScrollingMovementMethod;
+import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Scroller;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -77,48 +87,62 @@ public class MonthCalendarFragment extends Fragment {
     }
 
     /**주간 달력 배열 생성**/
-    public String[] getDay(int year, int month, int day) {
+    //public String[] getDay(int year, int month, int day) {
+    public ArrayList<DayItem> getDay(int year, int month, int day) {
         Calendar today = Calendar.getInstance();
         today.set(year, month, day); //파라미터로 받아온 year, month, day값 이용하여 날짜 설정
         int x = 0, y = 1;
         END_DAY = today.getActualMaximum(Calendar.DATE); //해당 월의 마지막 날짜를 알아냄
-        String[] date = new String[7]; //1*7사이즈의 String형 배열을 선언
+
+        ArrayList<DayItem> date = new ArrayList<DayItem>(); //ArrayList로
 
         for (int i = day; i <= END_DAY; i++) { //파라미터로 받은 day부터 마지막 날짜까지 도는 반복문 생성
-            if(x<7)
-                date[x++] = i + ""; //date 배열에 날짜(i) 저장
+            if(x<7){
+                x++; //ArrayList에 7개 이하까지만 저장되어야 함.
+                date.add(new DayItem(year+"", month+"", i+"")); //date 배열에 날짜(i) 저장
+            }
             else
                 break;
         }
         if (x < 7) { //나머지 배열에 저장
+            month++; //month먼저 증가
             for (; x < 7; x++) {
-                date[x] = (y++) + "";
+                if(month == 12){ //증가된 month가 13월 일 경우
+                    year++; month = 0; //다음 년도로 바꾸고 month를 1월로
+                    date.add(new DayItem(year+"", month+"", y+""));
+                    y++;
+                }
+                date.add(new DayItem(year+"", month+"", y+""));
+                y++;
             }
         }
-
         return date;
     }
 
     /**월간 달력 배열 생성**/
-    public static String[] getItem(int year, int month){
-        String[] date = new String[6*7]; //6*7사이즈의 String형 배열을 선언
+    public static /*String[]*/ArrayList<DayItem> getItem(int year, int month){
+        //String[] date = new String[6*7]; //6*7사이즈의 String형 배열을 선언
+        ArrayList<DayItem> date = new ArrayList<DayItem>(); //ArrayList로
 
         sDay.set(year,month,1); //sDay를 현재 년도,월의 1일로 설정
         START_DAY_OF_WEEK = sDay.get(Calendar.DAY_OF_WEEK); //시작일의 요일(1일의 요일)을 알아냄
         END_DAY = sDay.getActualMaximum(Calendar.DATE); //현재 월의 마지막 날짜를 알아냄
 
         //배열에 요일 입력
-        for(int i=0, n=1; i<date.length; i++){
+        for(int i=0, n=1; i<42; i++){
             if(i < START_DAY_OF_WEEK-1)  //date배열에 첫번째 요일 전까지 공백으로 채움
-                date[i] = "";            //DAY_OF_WEEK는 일요일:1 ~ 토요일:7로 결과가 나옴 -> START_DAT_OF_WEEK에서 -1을 해준 값 전까지가 공백
+                //date[i] = "";            //DAY_OF_WEEK는 일요일:1 ~ 토요일:7로 결과가 나옴 -> START_DAT_OF_WEEK에서 -1을 해준 값 전까지가 공백
+                date.add(new DayItem(year+"", month+"", ""));
 
             else if((i >= START_DAY_OF_WEEK-1) && (n <= END_DAY)) {//START_DAY_OF_WEEK에서 -1해준 값부터 배열 시작
-                date[i] = n+"";                                    //n값은 배열에 날짜를 입력하기위한 변수이고, 1일부터 END_DAY 즉, 마지막 날짜까지 배열에 입력
+                //date[i] = n+"";                                    //n값은 배열에 날짜를 입력하기위한 변수이고, 1일부터 END_DAY 즉, 마지막 날짜까지 배열에 입력
+                date.add(new DayItem(year+"", month+"", n+""));
                 n++;
             }
 
             else                    //이 전까지의 배열은 (START_DAY_OF_WEEK-1)+(END_DAY-1)까지 채워져있으니까
-                date[i] = "";       //START_DAY_OF_WEEK+END_DAY-1부터 배열의 마지막까지 공백으로 채워줌.
+                //date[i] = "";       //START_DAY_OF_WEEK+END_DAY-1부터 배열의 마지막까지 공백으로 채워줌.
+                date.add(new DayItem(year+"", month+"", ""));
         }
         return date;
     }
@@ -152,17 +176,23 @@ public class MonthCalendarFragment extends Fragment {
         //inflate() 함수 통해 fragment_month_calendar 파일로부터 레이아웃 로드하여 rootview에 저장
 
         if(mParam3 == -1){ //mParam3이 -1이면 월간달력 생성
-            String[] date = getItem(mParam1, mParam2); //mParam1년 mParam2월의 월간달력 배열 얻어옴
+            //String[] date = getItem(mParam1, mParam2); //mParam1년 mParam2월의 월간달력 배열 얻어옴
+            ArrayList<DayItem> date = new ArrayList<DayItem>();
+            date = getItem(mParam1, mParam2);
+            DayAdapter mGridViewAdapter = new DayAdapter(getActivity(), R.layout.fragment_week_calendar, date);
 
-            //girdview id를 가진 화면 레이아웃에 정의된 GridVies 객체 로딩
+            GridView gridView = (GridView) rootview.findViewById(R.id.gridview);
+            gridView.setAdapter(mGridViewAdapter);
+
+            /*//girdview id를 가진 화면 레이아웃에 정의된 GridVies 객체 로딩
             GridView gridView = (GridView) rootview.findViewById(R.id.gridview);
             //어댑터 준비 (date 배열 객체 이용, simple_list_item_1 리소스 사용)
-            ArrayAdapter<String> GridViewAdapter = new ArrayAdapter<String>(
+            ArrayAdapter<String> mGridViewAdapter = new ArrayAdapter<String>(
                     getActivity(),
                     android.R.layout.simple_list_item_1,
                     date);
             //어댑터를 GridView 객체에 연결
-            gridView.setAdapter(GridViewAdapter);
+            gridView.setAdapter(mGridViewAdapter);*/
 
 
             //선택된 날짜 정보를 토스트 메세지로 표시
@@ -170,9 +200,12 @@ public class MonthCalendarFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    if(!(parent.getAdapter().getItem(position).equals(""))) { //date[position]값이 공백이 아닐 경우만 toast 메세지 출력
+                    //if(!((((DayItem)parent.getAdapter().getItem(position)).month).equals(""))) { //date[position]값이 공백이 아닐 경우만 toast 메세지 출력
+                    if(!((((DayItem)parent.getAdapter().getItem(position)).day).equals(""))) { //date[position]값이 공백이 아닐 경우만 toast 메세지 출력
                         Toast.makeText((AppCompatActivity) getActivity(),
-                                mParam1 + "년" + (mParam2 + 1) + "월" + ((GridView)parent).getItemAtPosition(position) + "일", Toast.LENGTH_SHORT).show();
+                                /*mParam1 + "년" + (mParam2 + 1) + "월" + ((GridView)parent).getItemAtPosition(position) + "일"*/
+                                ((DayItem)mGridViewAdapter.getItem(position)).year + "년" + (Integer.parseInt(((DayItem)mGridViewAdapter.getItem(position)).month) + 1) + "월" + ((DayItem)mGridViewAdapter.getItem(position)).day + "일"
+                                , Toast.LENGTH_SHORT).show();
                         //일의 정보는 position정보를 통해 text를 가져옴
                         ((GridView)parent).setSelector(new PaintDrawable(Color.CYAN)); //배경색을 CYAN으로 변경
                     }
@@ -181,30 +214,85 @@ public class MonthCalendarFragment extends Fragment {
         }
 
         else{ //주간 달력 생성
-            String[] day = getDay(mParam1, mParam2, mParam3); //mParam1년 mParam2월 mParam3일의 주간달력 배열 얻어옴
-            //girdview id를 가진 화면 레이아웃에 정의된 GridVies 객체 로딩
+            ArrayList<DayItem> day = new ArrayList<DayItem>();
+            day = getDay(mParam1, mParam2, mParam3);
+            DayAdapter wGridViewAdapter = new DayAdapter(getActivity(), R.layout.fragment_week_calendar , day);
+
             GridView wGridview = (GridView) rootview.findViewById(R.id.gridview);
-            //어댑터 준비 (day 배열 객체 이용, simple_list_item_1 리소스 사용)
-            ArrayAdapter<String> wGridViewAdapter = new ArrayAdapter<String>(
-                    getActivity(),
-                    android.R.layout.simple_list_item_1,
-                    day);
-            //어댑터를 GridView 객체에 연결
             wGridview.setAdapter(wGridViewAdapter);
 
-            // 항목 클릭시 위치값과 값 토스트로 출력
-            wGridview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            GridView gridview_week = (GridView) rootview.findViewById(R.id.gridview_week);
+            String blink[] = new String[24*7];
+            for(int i=0; i<24*7; i++){
+                blink[i] = i+"";
+            }
+            ArrayAdapter<String> GridViewAdapter = new ArrayAdapter<String>(
+                    getActivity(),
+                    android.R.layout.simple_list_item_1,
+                    blink);
+            //어댑터를 GridView 객체에 연결
+            gridview_week.setAdapter(GridViewAdapter);
+
+
+            gridview_week.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    /**Toast.makeText((AppCompatActivity) getActivity(),
+                            ((DayItem)wGridViewAdapter.getItem(position%7)).year + "년" + (((DayItem)wGridViewAdapter.getItem(position%7)).month + 1) + "월" + ((DayItem)wGridViewAdapter.getItem(position%7)).day + "일",
+                            Toast.LENGTH_SHORT).show();**/
+                    Toast.makeText((AppCompatActivity) getActivity(),
+                            "Position = "+(position%7),
+                            Toast.LENGTH_SHORT).show();
+                        //일의 정보는 position정보를 통해 text를 가져옴
+                    for(int i=0; i<7; i++){  //background color 초기화
+                        wGridview.getChildAt(i).setBackgroundColor(Color.WHITE);
+                    }
+
+                    /*for(int i=0; i<24; i++){  //background color 초기화
+                        ((GridView)parent).getChildAt(i+0).setBackgroundColor(Color.WHITE);
+                    }*/
+                    ((GridView)parent).setSelector(new PaintDrawable(Color.CYAN)); //배경색을 CYAN으로 변경
+                    //((GridView)parent).getChildAt(position).setBackgroundColor(Color.CYAN); //getChildAt때문에 오류남
+
+                    wGridview.getChildAt(position%7).setBackgroundColor(Color.CYAN); //날짜 background 색상 변경
+                }
+            });
+
+            /*wGridview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
                     if(!(parent.getAdapter().getItem(position).equals(""))) { //date[position]값이 공백이 아닐 경우만 toast 메세지 출력
                         Toast.makeText((AppCompatActivity) getActivity(),
-                                mParam1 + "년" + (mParam2 + 1) + "월" + ((GridView)parent).getItemAtPosition(position) + "일", Toast.LENGTH_SHORT).show();
+                                ((DayItem)wGridViewAdapter.getItem(position)).year + "년" + (((DayItem)wGridViewAdapter.getItem(position)).month + 1) + "월" + ((DayItem)wGridViewAdapter.getItem(position)).day + "일",
+                                Toast.LENGTH_SHORT).show();
                         //일의 정보는 position정보를 통해 text를 가져옴
                         ((GridView)parent).setSelector(new PaintDrawable(Color.CYAN)); //배경색을 CYAN으로 변경
                     }
                 }
-            });
+            });*/
+
+            String time[] = new String[24];
+            for(int i = 0; i <= 23; i++) {
+                time[i] = i+"";
+            }
+
+            LinearLayout layout = (LinearLayout)rootview.findViewById(R.id.LinearLayout);
+
+            // layout param 생성
+            for(int i = 0; i <= 23; i++) {
+                TextView tv = new TextView(getActivity());  // 새로 추가할 textView 생성
+                //ContextThemeWrapper ctw = new ContextThemeWrapper(getActivity(), R.style.VerticalScrollableTextView);
+                //tv = new TextView(ctw);
+                tv.setText(i+"");  // textView에 내용 추가
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT , LinearLayout.LayoutParams.WRAP_CONTENT ,1);
+
+                tv.setLayoutParams(layoutParams);  // textView layout 설정
+
+                layout.addView(tv); // 기존 linearLayout에 textView 추가
+            }
         }
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParam1+"년"+(mParam2+1)+"월");

@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +32,28 @@ public class MainActivity extends AppCompatActivity {
         //FragmentTransaction의 add() 메소드 통해 동적으로 fragment 추가
         fragmentTransaction.commit();
         //fragmentTransaction의 변경사항 저장
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                //여기서 프래그먼트 전환하면 포지션 정보가 넘어가지 않음..ㅋ
+
+                /*FragmentManager fragmentManager = getSupportFragmentManager();
+                //안드로이드 이전 버전들에서도 프레그먼트 사용 가능하도록, fragmentManager에 getSupprotFragmentManager() 할당
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                //fragment 추가, 삭제 또는 교체 등의 작업 수행 중 오류 발생 시, 다시 원래 상태로 되돌릴 수 있도록, FragmentTransaction 클래스 이용
+                //FragmentManager의 beginTransaction() 메소드 호출 통해 FragmentTransaction의 인스턴스 얻어옴
+                fragmentTransaction.replace(R.id.main_container, new add_schedule());
+                //FragmentTransaction의 replace() 메소드 통해 동적으로 fragment 교체
+                fragmentTransaction.commit();
+                //fragmnetTransaction의 변경사항 저장
+                //위의 내용이 제대로 실행됐을 경우, "month_view" 토스트 메시지 띄우기*/
+            }
+        });
     }
 
 
