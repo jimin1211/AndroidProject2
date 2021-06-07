@@ -40,11 +40,21 @@ public class DayAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        //int Pheight = parent.getHeight();
+        //int Cheight = convertView.getHeight();
+
         if (convertView == null) { // 해당 항목 뷰가 이전에 생성된 적이 없는 경우
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             // 항목 뷰를 정의한 xml 리소스(여기서는 mResource 값)으로부터 항목 뷰 객체를 메모리로 로드
             convertView = inflater.inflate(mResource, parent,false);
         }
+        ViewGroup.LayoutParams param = convertView.getLayoutParams();
+        if(param == null){
+            param = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+
+        param.height = 180; //60dp
+
         // convertView 변수로 참조되는 항목 뷰 객체내에 포함된 이미지뷰 객체를 id를 통해 얻어옴
 
         TextView grid_day = (TextView) convertView.findViewById(R.id.item_textview);

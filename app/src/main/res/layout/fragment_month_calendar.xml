@@ -9,12 +9,12 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginTop="60dp"
-        android:id="@+id/LinearLayout"/>
+        android:id="@+id/LinearLayout"/>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,11 +29,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="30dp"
-                android:numColumns="7"
-                android:verticalSpacing="25dp"/>
+                android:numColumns="7"/>
         </FrameLayout>
 
-        <FrameLayout
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:id="@+id/LinearLayout"/>
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <GridView
+                        android:id="@+id/gridview_week"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:verticalSpacing="4dp"
+                        android:numColumns="7" />
+                </FrameLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <!--<FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <GridView
@@ -41,10 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:numColumns="7" />
-            <!--android:background="@color/black"
-            android:verticalSpacing="10dp"
-            android:horizontalSpacing="10dp"-->
-        </FrameLayout>
+        </FrameLayout>-->
 
     </LinearLayout>
 

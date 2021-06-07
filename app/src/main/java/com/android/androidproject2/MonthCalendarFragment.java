@@ -277,6 +277,16 @@ public class MonthCalendarFragment extends Fragment {
             for(int i = 0; i <= 23; i++) {
                 time[i] = i+"";
             }
+            /*//girdview id를 가진 화면 레이아웃에 정의된 GridVies 객체 로딩
+            GridView tmgrid = (GridView) rootview.findViewById(R.id.timegrid);
+            //어댑터 준비 (date 배열 객체 이용, simple_list_item_1 리소스 사용)
+            ArrayAdapter<String> tmgridAdapter = new ArrayAdapter<String>(
+                    getActivity(),
+                    android.R.layout.simple_list_item_1,
+                    time);
+            //어댑터를 GridView 객체에 연결
+            tmgrid.setAdapter(tmgridAdapter);*/
+
 
             LinearLayout layout = (LinearLayout)rootview.findViewById(R.id.LinearLayout);
 
@@ -285,7 +295,7 @@ public class MonthCalendarFragment extends Fragment {
                 TextView tv = new TextView(getActivity());  // 새로 추가할 textView 생성
                 //ContextThemeWrapper ctw = new ContextThemeWrapper(getActivity(), R.style.VerticalScrollableTextView);
                 //tv = new TextView(ctw);
-                tv.setText(i+"");  // textView에 내용 추가
+                tv.setText("\n"+i+"\n");  // textView에 내용 추가
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT , LinearLayout.LayoutParams.WRAP_CONTENT ,1);
 
